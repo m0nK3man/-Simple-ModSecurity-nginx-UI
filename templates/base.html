@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>ModSecurity Dashboard</h1>
+    <h1 id="title">ModSecurity Dashboard</h1>
     {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul>
-              {% for message in messages %}
-                <li>{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+	            <i>{{ message }}</i>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <div class="container">
         {% block content %}{% endblock %}
     </div>

@@ -18,7 +18,7 @@ def toggle_rule_view(filename):
     rule = next((rule for rule in all_rules if rule['filename'] == filename), None)
     if rule:
         toggle_rule(filename, not rule['enabled'])
-        flash(f"Rule '{filename}' has been {'enabled' if not rule['enabled'] else 'disabled'}.")
+        flash(f"Rule '{filename}' {'enabled' if not rule['enabled'] else 'disabled'} successful!")
     return redirect(url_for('dashboard'))
 
 @app.route('/edit_rule/<filename>', methods=['GET', 'POST'])
