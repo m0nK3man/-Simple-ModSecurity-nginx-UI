@@ -4,13 +4,15 @@
 <div id="configuration">
 <h2>Configuration</h2>
 <form method="post">
-    <h3>ModSecurity Configuration (modsecurity.conf)</h3>
-    <textarea name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
-
-    <h3>CRS Configuration (crs-setup.conf)</h3>
-    <textarea name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
-
-    <button type="submit">Save Configurations</button>
+    <div>
+	<h3>ModSecurity Configuration (modsecurity.conf)</h3>
+    	<textarea name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
+    </div>
+    <div>
+        <h3>CRS Configuration (crs-setup.conf)</h3>
+    	<textarea name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
+    </div>
+    <button class="button" type="submit">Save Configurations</button>
 </form>
 </id>
 {% endblock %}

@@ -64,7 +64,7 @@ body {
     min-width: 130px;
 }
 
-.rule-block table a {
+.button {
     padding: 5px;
     cursor: pointer;
     background-color: #3a70ff;
@@ -75,7 +75,7 @@ body {
     text-decoration: none;
 }
 
-.rule-block table a:hover {
+.button:hover {
     background-color: #5c89ff;
 }
 
@@ -126,4 +126,20 @@ body {
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
+}
+
+#configuration form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container form > div {
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.container form textarea {
+  margin: 15px 0px;
+  padding: 8px;
+  border: 2px solid cornflowerblue;
 }

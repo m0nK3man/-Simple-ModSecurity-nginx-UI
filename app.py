@@ -76,7 +76,10 @@ def toggle_rule_view(filename):
 
 @app.route('/edit_rule/<filename>', methods=['GET', 'POST'])
 def edit_rule(filename):
-    rule = next((rule for rule in list_rules() if rule['filename'] == filename), None)
+    enabled_rules, disabled_rules = list_rules()  # Unpack the two lists properly
+    all_rules = enabled_rules + disabled_rules      # Combine them to search for the rule
+
+    rule = next((rule for rule in all_rules if rule['filename'] == filename), None)
     if not rule:
         flash("Rule not found.")
         return redirect(url_for('dashboard'))
