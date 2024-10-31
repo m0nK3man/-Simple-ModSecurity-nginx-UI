@@ -57,6 +57,9 @@ body {
     color: red;
     min-width: 350px;
 }
+.rule-block table td:last-child {
+    min-width: 130px;
+}
 
 .rule-block table a {
     padding: 5px;
