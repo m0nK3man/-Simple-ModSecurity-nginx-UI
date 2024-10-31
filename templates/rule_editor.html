@@ -1,0 +1,9 @@
+<!-- templates/rule_editor.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Rule: {{ rule.filename }}</h2>
+<form method="post">
+    <textarea name="content" rows="20" cols="100">{{ rule.content }}</textarea><br>
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
