@@ -1,0 +1,46 @@
+<!-- templates/dashboard.html -->
+{% extends "base.html" %}
+{% block content %}
+<div id="dashboard">
+<h2>Log Dashboard</h2>
+
+<!-- Nginx Access Log -->
+<h3>Nginx Access Log</h3>
+<table class="log-table">
+    <tr>
+        <th>Log Entry</th>
+    </tr>
+    {% for log in access_logs %}
+    <tr>
+        <td>{{ log }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Nginx Error Log -->
+<h3>Nginx Error Log</h3>
+<table class="log-table">
+    <tr>
+        <th>Log Entry</th>
+    </tr>
+    {% for log in error_logs %}
+    <tr>
+        <td>{{ log }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- ModSecurity Audit Log -->
+<h3>ModSecurity Audit Log</h3>
+<table class="log-table">
+    <tr>
+        <th>Log Entry</th>
+    </tr>
+    {% for log in audit_logs %}
+    <tr>
+        <td>{{ log }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</id>
+{% endblock %}

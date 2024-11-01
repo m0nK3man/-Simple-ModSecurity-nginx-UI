@@ -12,6 +12,10 @@ def home():
 
 @app.route('/dashboard')
 def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/logs')
+def logs():
     nginx_access_log = "/var/log/nginx/access.log"
     nginx_error_log = "/var/log/nginx/error.log"
     modsec_audit_log = "/var/log/modsec_audit.log"
@@ -22,7 +26,7 @@ def dashboard():
     audit_logs = tailer.tail(open(modsec_audit_log), 10)
 
     return render_template(
-        'dashboard.html',
+        'logs.html',
         access_logs=access_logs,
         error_logs=error_logs,
         audit_logs=audit_logs
