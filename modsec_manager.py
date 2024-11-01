@@ -2,12 +2,12 @@
 import os
 import subprocess
 
-from config import MODSECURITY_RULES_DIR, NGINX_RELOAD_CMD
+from config import MODSECURITY_RULES_DIR, NGINX_RELOAD_CMD, MODSECURITY_CONF_PATH
 
 def list_rules():
     enabled_rules = []
     disabled_rules = []
-    
+
     # List and categorize rules based on their filename (dot prefix for disabled)
     for filename in sorted(os.listdir(MODSECURITY_RULES_DIR)):
         if filename.endswith(".conf"):
@@ -44,3 +44,31 @@ def save_rule(filename, content):
     with open(os.path.join(MODSECURITY_RULES_DIR, filename), "w") as f:
         f.write(content)
     reload_nginx()
+
+def get_current_mode():
+    try:
+        with open(MODSECURITY_CONF_PATH, 'r') as f:
+            for line in f:
+                if "SecRuleEngine" in line:
+                    return line.split()[1]
+    except FileNotFoundError:
+        return "Unknown"
+    return "Unknown"
+
+def set_mode(mode):
+    try:
+        with open(MODSECURITY_CONF_PATH, 'r') as f:
+            lines = f.readlines()
+        
+        with open(MODSECURITY_CONF_PATH, 'w') as f:
+            for line in lines:
+                if "SecRuleEngine" in line:
+                    f.write(f"SecRuleEngine {mode}\n")
+                else:
+                    f.write(line)
+        
+        reload_nginx()
+        return True
+    except Exception as e:
+        print(f"Error updating mode: {e}")
+        return False

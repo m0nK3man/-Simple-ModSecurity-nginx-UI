@@ -100,11 +100,6 @@ body {
     background-color: #f7f7f7;
 }
 
-/* Add a black background color to the top navigation */
-.topnav {
-  background-color: #333;
-  overflow: hidden;
-}
 
 /* Style the links inside the navigation bar */
 .topnav a {
@@ -142,4 +137,68 @@ body {
   margin: 15px 0px;
   padding: 8px;
   border: 2px solid cornflowerblue;
+}
+
+/* styles for log viewer */
+.log-content {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    max-height: 500px;
+    overflow-y: scroll;
+    font-family: monospace;
+}
+
+/* General navigation styling */
+.topnav {
+    display: flex;
+    background-color: #333;
+    padding: 10px;
+}
+
+.topnav a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.topnav a:hover {
+    background-color: #575757;
+    color: white;
+}
+
+/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown menu hidden by default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 48px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Dropdown links styling */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #333;
+}
+
+/* Show dropdown content on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
 }

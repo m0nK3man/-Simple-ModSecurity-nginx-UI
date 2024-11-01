@@ -11,11 +11,18 @@
     <div class="topnav">
       <a href="{{ url_for('home') }}">Home</a>
       <a href="{{ url_for('dashboard') }}">Dashboard</a>
-      <a href="{{ url_for('logs') }}">Logs</a>
+      <!-- Logs dropdown menu -->
+      <div class="dropdown">
+          <a href="#" class="dropbtn">Logs</a>
+          <div class="dropdown-content">
+              <a href="{{ url_for('access_logs') }}">Access Logs</a>
+              <a href="{{ url_for('error_logs') }}">Error Logs</a>
+              <a href="{{ url_for('audit_logs') }}">Audit Logs</a>
+          </div>
+      </div>
       <a href="{{ url_for('rules') }}">Rules</a>
       <a href="{{ url_for('configuration') }}">Configuration</a>
     </div>
-
     <!-- Page Title -->
     <h1 id="title">ModSecurity Dashboard</h1>
 

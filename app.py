@@ -1,36 +1,65 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash
-from modsec_manager import list_rules, toggle_rule, save_rule
+from modsec_manager import list_rules, toggle_rule, save_rule, get_current_mode, set_mode
+from config import ACCESS_LOG_PATH, ERROR_LOG_PATH, AUDIT_LOG_PATH
 import tailer  # Ensure the `tailer` package is installed with `pip install tailer`
+import subprocess
 
 app = Flask(__name__)
 app.secret_key = 'a3f0b8c42fa67a5de4e0b8f21d7b3a76'
 
-@app.route('/')
+#@app.route('/')
+#def home():
+#    return render_template('home.html')
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    current_mode = get_current_mode()
+
+    if request.method == 'POST':
+        selected_mode = request.form.get('mode')
+        if set_mode(selected_mode):
+            flash(f"ModSecurity mode updated to '{selected_mode}'.")
+        else:
+            flash("Failed to update ModSecurity mode.")
+        return redirect(url_for('home'))
+
+    return render_template('home.html', current_mode=current_mode)
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 
+# Helper function to tail logs
+def tail_log(file_path, lines=50):
+    try:
+        output = subprocess.check_output(['tail', '-n', str(lines), file_path], text=True)
+        return output.splitlines()
+    except Exception as e:
+        return [f"Error reading log file: {e}"]
+
+# Routes for logs
 @app.route('/logs')
-def logs():
-    nginx_access_log = "/var/log/nginx/access.log"
-    nginx_error_log = "/var/log/nginx/error.log"
-    modsec_audit_log = "/var/log/modsec_audit.log"
+def logs_home():
+    return render_template('logs.html')
 
-    # Fetch the last 10 lines of each log file
-    access_logs = tailer.tail(open(nginx_access_log), 10)
-    error_logs = tailer.tail(open(nginx_error_log), 10)
-    audit_logs = tailer.tail(open(modsec_audit_log), 10)
+@app.route('/logs/access')
+def access_logs():
+    lines = request.args.get('lines', default=50, type=int)
+    log_content = tail_log(ACCESS_LOG_PATH, lines)
+    return render_template('log_viewer.html', log_content=log_content, log_type="Access", lines=lines)
 
-    return render_template(
-        'logs.html',
-        access_logs=access_logs,
-        error_logs=error_logs,
-        audit_logs=audit_logs
-    )
+@app.route('/logs/error')
+def error_logs():
+    lines = request.args.get('lines', default=50, type=int)
+    log_content = tail_log(ERROR_LOG_PATH, lines)
+    return render_template('log_viewer.html', log_content=log_content, log_type="Error", lines=lines)
+
+@app.route('/logs/audit')
+def audit_logs():
+    lines = request.args.get('lines', default=50, type=int)
+    log_content = tail_log(AUDIT_LOG_PATH, lines)
+    return render_template('log_viewer.html', log_content=log_content, log_type="Audit", lines=lines)
 
 @app.route('/rules')
 def rules():
