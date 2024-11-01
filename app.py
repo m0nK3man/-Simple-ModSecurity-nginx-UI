@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash
-from modsec_manager import list_rules, toggle_rule, save_rule, get_current_mode, set_mode
+from modsec_manager import list_rules, toggle_rule, save_rule, get_current_mode, set_mode, read_modsecurity_conf, read_crs_conf, save_modsecurity_conf, save_crs_conf
 from config import ACCESS_LOG_PATH, ERROR_LOG_PATH, AUDIT_LOG_PATH
 import tailer  # Ensure the `tailer` package is installed with `pip install tailer`
 import subprocess
@@ -8,9 +8,7 @@ import subprocess
 app = Flask(__name__)
 app.secret_key = 'a3f0b8c42fa67a5de4e0b8f21d7b3a76'
 
-#@app.route('/')
-#def home():
-#    return render_template('home.html')
+# ==================== Home ====================
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -26,6 +24,8 @@ def home():
 
     return render_template('home.html', current_mode=current_mode)
 
+# ==================== Dashboard ====================
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -37,6 +37,8 @@ def tail_log(file_path, lines=50):
         return output.splitlines()
     except Exception as e:
         return [f"Error reading log file: {e}"]
+
+# ==================== Logs ====================
 
 # Routes for logs
 @app.route('/logs')
@@ -61,40 +63,12 @@ def audit_logs():
     log_content = tail_log(AUDIT_LOG_PATH, lines)
     return render_template('log_viewer.html', log_content=log_content, log_type="Audit", lines=lines)
 
+# ==================== Rules ====================
+
 @app.route('/rules')
 def rules():
     enabled_rules, disabled_rules = list_rules()
     return render_template('rules.html', enabled_rules=enabled_rules, disabled_rules=disabled_rules)
-
-@app.route('/configuration', methods=['GET', 'POST'])
-def configuration():
-    modsecurity_conf_path = '/etc/nginx/modsec/modsecurity.conf'
-    crs_conf_path = '/etc/nginx/modsec/crs/crs-setup.conf'
-
-    if request.method == 'POST':
-        # Save updated contents from the form
-        modsecurity_conf_content = request.form['modsecurity_conf']
-        crs_conf_content = request.form['crs_conf']
-
-        with open(modsecurity_conf_path, 'w') as f:
-            f.write(modsecurity_conf_content)
-        with open(crs_conf_path, 'w') as f:
-            f.write(crs_conf_content)
-
-        flash("Configurations updated successfully.")
-        return redirect(url_for('configuration'))
-
-    # Load current configuration contents
-    with open(modsecurity_conf_path) as f:
-        modsecurity_conf_content = f.read()
-    with open(crs_conf_path) as f:
-        crs_conf_content = f.read()
-
-    return render_template(
-        'configuration.html',
-        modsecurity_conf=modsecurity_conf_content,
-        crs_conf=crs_conf_content
-    )
 
 @app.route('/toggle_rule/<filename>')
 def toggle_rule_view(filename):
@@ -124,6 +98,36 @@ def edit_rule(filename):
         return redirect(url_for('dashboard'))
     
     return render_template('rule_editor.html', rule=rule)
+
+# ==================== Configuration ====================
+
+@app.route('/configuration', methods=['GET'])
+def configuration():
+    modsecurity_conf = read_modsecurity_conf()
+    crs_conf = read_crs_conf()
+    return render_template('configuration.html', modsecurity_conf=modsecurity_conf, crs_conf=crs_conf)
+
+# Route to save ModSecurity configuration
+@app.route('/save_modsecurity_conf', methods=['POST'])
+def save_modsecurity_conf():
+    modsecurity_conf_content = request.form.get('modsecurity_conf')
+    if save_modsecurity_conf(modsecurity_conf_content):
+        flash("ModSecurity configuration saved successfully.")
+    else:
+        flash("Failed to save ModSecurity configuration.")
+    return redirect(url_for('configuration'))
+
+# Route to save CRS configuration
+@app.route('/save_crs_conf', methods=['POST'])
+def save_crs_conf():
+    crs_conf_content = request.form.get('crs_conf')
+    if save_crs_conf(crs_conf_content):
+        flash("CRS configuration saved successfully.")
+    else:
+        flash("Failed to save CRS configuration.")
+    return redirect(url_for('configuration'))
+
+# ==================== Main ====================
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,18 +1,24 @@
 <!-- templates/configuration.html -->
 {% extends "base.html" %}
 {% block content %}
-<div id="configuration">
-<h2>Configuration</h2>
-<form method="post">
-    <div>
-	<h3>ModSecurity Configuration (modsecurity.conf)</h3>
-    	<textarea name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
-    </div>
-    <div>
-        <h3>CRS Configuration (crs-setup.conf)</h3>
-    	<textarea name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
-    </div>
-    <button class="button" type="submit">Save Configurations</button>
-</form>
-</id>
+<div class="rule-block">
+    <!-- ModSecurity Configuration Section -->
+    <form method="post" action="{{ url_for('save_modsecurity_conf') }}">
+        <div>
+            <h3>ModSecurity Configuration (modsecurity.conf)</h3>
+            <textarea name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
+            <button class="button" type="submit">Save ModSecurity Configuration</button>
+        </div>
+    </form>
+</div>
+<div class="rule-block">
+    <!-- CRS Configuration Section -->
+    <form method="post" action="{{ url_for('save_crs_conf') }}">
+        <div>
+            <h3>CRS Configuration (crs-setup.conf)</h3>
+            <textarea name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
+            <button class="button" type="submit">Save CRS Configuration</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

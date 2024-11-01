@@ -123,11 +123,6 @@ body {
   color: white;
 }
 
-#configuration form {
-  display: flex;
-  justify-content: space-between;
-}
-
 .container form > div {
   margin: 0 auto;
   padding: 25px;
@@ -201,4 +196,11 @@ body {
 /* Show dropdown content on hover */
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.waf-mode {
+  margin: 5px 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
 }

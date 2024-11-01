@@ -13,13 +13,13 @@
 
 <!-- Mode Selection Form -->
 <form method="POST" action="{{ url_for('home') }}">
-    <label for="mode">Select Mode:</label>
-    <select name="mode" id="mode">
-        <option value="On" {% if current_mode == 'On' %}selected{% endif %}>On</option>
-        <option value="Off" {% if current_mode == 'Off' %}selected{% endif %}>Off</option>
-        <option value="DetectionOnly" {% if current_mode == 'DetectionOnly' %}selected{% endif %}>Detection Only</option>
+    <label for="mode">WAF Mode:</label>
+    <select name="mode" class="waf-mode">
+        <option value="On" {% if current_mode == 'On' %}selected{% endif %}>Defend Mode</option>
+        <option value="Off" {% if current_mode == 'Off' %}selected{% endif %}>Transparent</option>
+        <option value="DetectionOnly" {% if current_mode == 'DetectionOnly' %}selected{% endif %}>Detect Mode</option>
     </select>
-    <button type="submit">Save</button>
+    <button class="button" type="submit">Save</button>
 </form>
 
 <!-- Flash messages -->

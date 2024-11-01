@@ -2,7 +2,43 @@
 import os
 import subprocess
 
-from config import MODSECURITY_RULES_DIR, NGINX_RELOAD_CMD, MODSECURITY_CONF_PATH
+from config import MODSECURITY_RULES_DIR, NGINX_RELOAD_CMD, MODSECURITY_CONF_PATH, CRS_CONF_PATH
+
+# ==================== Global ====================
+
+def reload_nginx():
+    subprocess.run(NGINX_RELOAD_CMD, shell=True)
+
+# ==================== Home ====================
+
+def get_current_mode():
+    try:
+        with open(MODSECURITY_CONF_PATH, 'r') as f:
+            for line in f:
+                if "SecRuleEngine" in line:
+                    return line.split()[1]
+    except FileNotFoundError:
+        return "Unknown"
+    return "Unknown"
+
+def set_mode(mode):
+    try:
+        with open(MODSECURITY_CONF_PATH, 'r') as f:
+            lines = f.readlines()
+
+        with open(MODSECURITY_CONF_PATH, 'w') as f:
+            for line in lines:
+                if "SecRuleEngine" in line:
+                    f.write(f"SecRuleEngine {mode}\n")
+                else:
+                    f.write(line)
+        reload_nginx()
+        return True
+    except Exception as e:
+        print(f"Error updating mode: {e}")
+        return False
+
+# ==================== Rules ====================
 
 def list_rules():
     enabled_rules = []
@@ -37,38 +73,38 @@ def toggle_rule(filename, enable):
             os.rename(file_path, os.path.join(MODSECURITY_RULES_DIR, f".{filename}"))
     reload_nginx()
 
-def reload_nginx():
-    subprocess.run(NGINX_RELOAD_CMD, shell=True)
-
 def save_rule(filename, content):
     with open(os.path.join(MODSECURITY_RULES_DIR, filename), "w") as f:
         f.write(content)
     reload_nginx()
 
-def get_current_mode():
-    try:
-        with open(MODSECURITY_CONF_PATH, 'r') as f:
-            for line in f:
-                if "SecRuleEngine" in line:
-                    return line.split()[1]
-    except FileNotFoundError:
-        return "Unknown"
-    return "Unknown"
+# ==================== Configuration ====================
 
-def set_mode(mode):
+def read_modsecurity_conf():
+    with open(MODSECURITY_CONF_PATH, 'r') as f:
+        return f.read()
+
+def save_modsecurity_conf(content):
     try:
-        with open(MODSECURITY_CONF_PATH, 'r') as f:
-            lines = f.readlines()
-        
         with open(MODSECURITY_CONF_PATH, 'w') as f:
-            for line in lines:
-                if "SecRuleEngine" in line:
-                    f.write(f"SecRuleEngine {mode}\n")
-                else:
-                    f.write(line)
-        
+            f.write(content)
         reload_nginx()
         return True
     except Exception as e:
-        print(f"Error updating mode: {e}")
+        print(f"Error saving modsecurity.conf: {e}")
         return False
+
+def read_crs_conf():
+    with open(CRS_CONF_PATH, 'r') as f:
+        return f.read()
+
+def save_crs_conf(content):
+    try:
+        with open(CRS_CONF_PATH, 'w') as f:
+            f.write(content)
+        reload_nginx()
+        return True
+    except Exception as e:
+        print(f"Error saving crs-setup.conf: {e}")
+        return False
+
