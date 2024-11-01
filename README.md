@@ -10,9 +10,9 @@
   
 ![dashboard](https://github.com/user-attachments/assets/5f295df6-4aa5-4b00-8223-b511e3268664)
 
-  
 + Logs nav (access,error,audit,..)
 + Mode button (Home tab)
++ Reload button (Rule tab)
 
 ![image](https://github.com/user-attachments/assets/2b5b6480-76cf-4c1d-9edc-33af6aaf80c3)
 
