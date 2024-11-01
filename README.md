@@ -18,6 +18,7 @@
 
 + Log parser: 1 request > many messages
   - datetime
+  - target, dest ip
   - max severity (max severity, trừ msg có "exceed")
   - anomaly score (find msg có "score")
 
