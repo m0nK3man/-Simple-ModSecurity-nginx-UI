@@ -1,19 +1,19 @@
 <!-- templates/log_viewer.html -->
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ log_type }} Logs</h2>
-
-<!-- Form to specify lines to tail -->
-<form method="get" action="">
-    <label for="lines">Number of lines to view:</label>
-    <input type="number" name="lines" id="lines" value="{{ lines }}" min="1">
-    <button type="submit">Update</button>
-</form>
-
-<!-- Display log content -->
-<pre class="log-content">
-{% for line in log_content %}
-{{ line }}
-{% endfor %}
-</pre>
+<div class="log-viewer">
+    <h2>{{ log_type }} Logs</h2>
+    <!-- Form to specify lines to tail -->
+    <form method="get" action="">
+        <label for="lines">Number of lines to view:</label>
+        <input type="number" name="lines" id="lines" value="{{ lines }}" min="1">
+        <button class="button" type="submit">Update</button>
+    </form>
+    <!-- Display log content -->
+    <pre class="log-content">
+    {% for line in log_content %}
+    {{ line }}
+    {% endfor %}
+    </pre>
+</div>
 {% endblock %}
