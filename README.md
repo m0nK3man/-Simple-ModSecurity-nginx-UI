@@ -16,6 +16,14 @@
 
 ![image](https://github.com/user-attachments/assets/2b5b6480-76cf-4c1d-9edc-33af6aaf80c3)
 
-+ Log parser
++ Log parser: 1 request > many messages
+  - datetime
+  - max severity (max severity, trừ msg có "exceed")
+  - anomaly score (find msg có "score")
 
 ![attacks](https://github.com/user-attachments/assets/aff42930-f1d3-4add-b981-2f1f56786ba3)
+
++ DB
++ Search function
+
+
