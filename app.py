@@ -109,7 +109,7 @@ def configuration():
 
 # Route to save ModSecurity configuration
 @app.route('/save_modsecurity_conf', methods=['POST'])
-def save_modsecurity_conf():
+def modsecurity_conf():
     modsecurity_conf_content = request.form.get('modsecurity_conf')
     if save_modsecurity_conf(modsecurity_conf_content):
         flash("ModSecurity configuration saved successfully.")
@@ -119,7 +119,7 @@ def save_modsecurity_conf():
 
 # Route to save CRS configuration
 @app.route('/save_crs_conf', methods=['POST'])
-def save_crs_conf():
+def crs_conf():
     crs_conf_content = request.form.get('crs_conf')
     if save_crs_conf(crs_conf_content):
         flash("CRS configuration saved successfully.")
