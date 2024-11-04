@@ -32,12 +32,6 @@ a {
   padding: 25px;
 }
 
-.container form textarea {
-  margin: 15px 0px;
-  padding: 8px;
-  border: 2px solid cornflowerblue;
-}
-
 .button {
     padding: 5px;
     cursor: pointer;
@@ -191,5 +185,14 @@ a {
   width: 1000px;
   font-size: 11px;
   line-height: 10px;
+}
+
+/* # ==================== Configuration ==================== */
+
+.config-area {
+  margin: 15px 0px;
+  padding: 8px;
+  border: 2px solid cornflowerblue;
+  width: 600px;
 }
 

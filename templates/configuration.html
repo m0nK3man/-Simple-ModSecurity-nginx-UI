@@ -6,7 +6,7 @@
     <form method="post" action="{{ url_for('modsecurity_conf') }}">
         <div>
             <h3>ModSecurity Configuration (modsecurity.conf)</h3>
-            <textarea name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
+            <textarea class="config-area" name="modsecurity_conf" rows="20" cols="100">{{ modsecurity_conf }}</textarea><br>
             <button class="button" type="submit">Save ModSecurity Configuration</button>
         </div>
     </form>
@@ -16,7 +16,7 @@
     <form method="post" action="{{ url_for('crs_conf') }}">
         <div>
             <h3>CRS Configuration (crs-setup.conf)</h3>
-            <textarea name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
+            <textarea class="config-area" name="crs_conf" rows="20" cols="100">{{ crs_conf }}</textarea><br>
             <button class="button" type="submit">Save CRS Configuration</button>
         </div>
     </form>
